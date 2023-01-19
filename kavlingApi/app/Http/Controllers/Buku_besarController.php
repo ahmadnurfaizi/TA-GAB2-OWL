@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\Hash;
 
 class Buku_besarController extends Controller
 {
+    // Function Index digunakan untuk menampilkan banyak Data
+    public function index()
+    {
+        $data = Buku_besar::orderBy("buku_besar.created_at", "DESC")->get();
+        if($data)
+        {
+            return ApiFormatter::createApi(200, 'Success', $data);
+        }
+        else
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {

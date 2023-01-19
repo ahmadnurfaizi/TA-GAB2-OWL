@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
+    // Function Index digunakan untuk menampilkan banyak Data
+    public function index()
+    {
+        $data = Users::orderBy("users.created_at", "DESC")->get();
+        if($data)
+        {
+            return ApiFormatter::createApi(200, 'Success', $data);
+        }
+        else
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function store digunakan untuk mengirim data ke tabel database
     public function store(Request $request)
     {

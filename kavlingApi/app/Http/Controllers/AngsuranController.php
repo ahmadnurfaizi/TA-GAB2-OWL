@@ -25,6 +25,29 @@ class AngsuranController extends Controller
         }
     }
 
+    // Function store digunakan untuk mengirim data ke tabel database
+    public function store(Request $request)
+    {
+        try
+        {
+            $data = $request->all();
+            $insert = Angsuran::create($data);
+            $data = Angsuran::where("id_angsuran","=", $insert->id_angsuran)->first();
+            if($data)
+            {
+                return ApiFormatter::createApi(200, 'Success', $data);
+            }
+            else
+            {
+                return ApiFormatter::createApi(400, 'Failed');
+            }
+        }
+        catch(Exception)
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function show digunakan untuk menampilkan 1 data
     public function show($id)
     {

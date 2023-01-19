@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\KonsumenController;
 use App\Http\Controllers\AngsuranController;
-
+use App\Http\Controllers\Buku_besarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +17,13 @@ use App\Http\Controllers\AngsuranController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// buku_besar
+Route::post('buku_besar/store', [Buku_besarController::class,'store']);
+Route::get('buku_besar', [Buku_besarController::class,'index']);
+Route::post('buku_besar/update/{id}', [Buku_besarController::class,'update']);
+Route::get('buku_besar/destroy/{id}', [Buku_besarController::class,'destroy']);
+Route::get('buku_besar/show/{id}', [Buku_besarController::class,'show']);
 
 // angsuran
 Route::post('angsuran/store', [AngsuranController::class,'store']);

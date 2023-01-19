@@ -25,6 +25,20 @@ class AngsuranController extends Controller
         }
     }
 
+    // Function show digunakan untuk menampilkan 1 data
+    public function show($id)
+    {
+        $data = Angsuran::where("angsuran.id_angsuran",$id)->get();
+        if($data)
+        {
+            return ApiFormatter::createApi(200, 'Success', $data);
+        }
+        else
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {

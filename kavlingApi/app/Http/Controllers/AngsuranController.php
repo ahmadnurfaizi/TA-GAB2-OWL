@@ -25,6 +25,46 @@ class AngsuranController extends Controller
         }
     }
 
+    // Function laporan digunakan untuk membuat laporan
+    public function laporan()
+    {
+        $konsumen = Konsumen::orderBy("nama_konsumen", "DESC")->get();
+        foreach($konsumen as $row)
+        {
+            $angsuran = Angsuran::where("id_konsumen", $row['id_konsumen'])->orderBy("tanggal_angsuran", "ASC")->get();
+            foreach ($angsuran as $as)
+            {
+                $bulan = date('M', strtotime($as['tanggal_angsuran']));
+                $tgl_bayar = "tgl".$bulan;
+                $nominal = "nominal".$bulan;
+                $data_angsuran[] = array(
+                    $bulan => $bulan,
+                    $tgl_bayar => $as['tanggal_angsuran'],
+                    $nominal => $as['nominal_angsuran'],
+                );
+                $data[] = array(
+                    'id_konsumen' => $row['id_konsumen'],
+                    'nama_konsumen' => $row['nama_konsumen'],
+                    'no_kav' => $row['no_kav'],
+                    'tot_pembelian' => $row['tot_pembelian'],
+                    'pembayaran_awal' => $row['pembayaran_awal'],
+                    'kurang_bayar' => $row['kurang_bayar'],
+                    'created_at' => $row['created_at'],
+                    'tanggal_angsuran' => $as['tanggal_angsuran'],
+                    'nominal_angsuran' => $as['nominal_angsuran']
+                );
+            }
+        }
+        if($data )
+        {
+            return ApiFormatter::createApi(200, 'Success', $data);
+        }
+        else
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function store digunakan untuk mengirim data ke tabel database
     public function store(Request $request)
     {

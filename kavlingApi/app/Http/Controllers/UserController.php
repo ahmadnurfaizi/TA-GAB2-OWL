@@ -60,6 +60,29 @@ class UsersController extends Controller
         }
     }
 
+    // Function update digunakan untuk mengirim data yang sudah di edit ke tabel database
+    public function update(Request $request, $id)
+    {
+        try
+        {
+            $data = $request->all();
+            $update = Users::findOrFail($id)->update($data);
+            $data = Users::where("id_users",$id);
+            if($data)
+            {
+                return ApiFormatter::createApi(200, 'Success', $data);
+            }
+            else
+            {
+                return ApiFormatter::createApi(400, 'Failed');
+            }
+        }
+        catch(Exception)
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {

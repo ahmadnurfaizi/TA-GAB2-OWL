@@ -24,6 +24,39 @@ class KonsumenController extends Controller
         }
     }
 
+    // Function Index digunakan untuk mengirim data ke tabel database
+    public function store(Request $request)
+    {
+        try
+        {
+            $data = $request->all();
+            if(($request->kurang_bayar == 0))
+            {
+                $data['kurang_bayar'] = $request->tot_pembelian - $request->pembayaran_awal;
+            }
+            else
+            {
+                $data['kurang_bayar'] = $request->tot_pembelian - $request->pembayaran_awal;
+            }
+
+            $insert = Konsumen::create($data);
+
+            $data = Konsumen::where("id_konsumen","=", $insert->id_konsumen)->first();
+            if($data)
+            {
+                return ApiFormatter::createApi(200, 'Success', $data);
+            }
+            else
+            {
+                return ApiFormatter::createApi(400, 'Failed');
+            }
+        }
+        catch(Exception)
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
     // Function show digunakan untuk menampilkan 1 data
     public function show($id)
     {

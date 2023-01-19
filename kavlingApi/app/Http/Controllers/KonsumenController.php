@@ -24,7 +24,7 @@ class KonsumenController extends Controller
         }
     }
 
-    // Function Index digunakan untuk mengirim data ke tabel database
+    // Function store digunakan untuk mengirim data ke tabel database
     public function store(Request $request)
     {
         try
@@ -66,6 +66,37 @@ class KonsumenController extends Controller
             return ApiFormatter::createApi(200, 'Success', $data);
         }
         else
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
+    // Function update digunakan untuk mengirim data yang sudah di edit ke tabel database
+    public function update(Request $request, $id)
+    {
+        try
+        {
+            $data = $request->all();
+            if(($request->kurang_bayar == 0))
+            {
+                $data['kurang_bayar'] = $request->tot_pembelian - $request->pembayaran_awal;
+            }
+            else
+            {
+                $data['kurang_bayar'] = $request->tot_pembelian - $request->pembayaran_awal;
+            }
+            $update = Konsumen::findOrFail($id)->update($data);
+            $data = Konsumen::where("id_konsumen",$id);
+            if($update)
+            {
+                return ApiFormatter::createApi(200, 'Success', $data);
+            }
+            else
+            {
+                return ApiFormatter::createApi(400, 'Failed');
+            }
+        }
+        catch(Exception)
         {
             return ApiFormatter::createApi(400, 'Failed');
         }

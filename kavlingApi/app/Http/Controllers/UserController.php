@@ -10,38 +10,59 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-        /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    // Function store digunakan untuk mengirim data ke tabel database
+    public function store(Request $request)
+    {
+        try
+        {
+            $insert = Users::create($request->all());
+            $data = Users::where("id_users","=", $insert->id_users)->get();
+            if($data)
+            {
+                return ApiFormatter::createApi(200, 'Success', $data);
+            }
+            else
+            {
+                return ApiFormatter::createApi(400, 'Failed');
+            }
+        }
+        catch(Exception)
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
 
-             // Function Index digunakan untuk menampilkan 1 data
-             public function show($id)
-             {
-                 $data = Users::where("users.id_users",$id)->get();
+    // Function show digunakan untuk menampilkan 1 data
+    public function show($id)
+    {
+        $data = Users::where("users.id_users",$id)->get();
+        if($data)
+        {
+            return ApiFormatter::createApi(200, 'Success', $data);
+        }
+        else
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
 
-                 if($data){
-                     return ApiFormatter::createApi(200, 'Success', $data);
-                 } else {
-                     return ApiFormatter::createApi(400, 'Failed');
-                 }
-             }
-
-
+    // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {
-        try {
-
+        try
+        {
             $data = Users::where('username', '=', $request->username)->where('password', '=', $request->password)->get();
-
-            if ($data) {
+            if ($data)
+            {
                 return ApiFormatter::createApi(200, 'Success Login', $data);
-            } else {
+            }
+            else
+            {
                 return ApiFormatter::createApi(400, 'users/Password Wrong!');
             }
-        } catch (Exception) {
+        }
+        catch (Exception)
+        {
             return ApiFormatter::createApi(400, 'Failed');
         }
     }

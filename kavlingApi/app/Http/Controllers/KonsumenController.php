@@ -10,18 +10,23 @@ use Illuminate\Support\Facades\Hash;
 
 class KonsumenController extends Controller
 {
+    // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {
-        try {
-
+        try
+        {
             $data = Konsumen::where('username', '=', $request->username)->where('password', '=', $request->password)->get();
-
-            if ($data) {
+            if ($data)
+            {
                 return ApiFormatter::createApi(200, 'Success Login', $data);
-            } else {
+            }
+            else
+            {
                 return ApiFormatter::createApi(400, 'konsumen/Password Wrong!');
             }
-        } catch (Exception) {
+        }
+        catch (Exception)
+        {
             return ApiFormatter::createApi(400, 'Failed');
         }
     }

@@ -134,6 +134,13 @@ class AngsuranController extends Controller
         }
     }
 
+    // Function destroy digunakan untuk menghapus data
+    public function destroy($id)
+    {
+        $data = Angsuran::findOrFail($id)->delete();
+        return ApiFormatter::createApi(200, 'Success Delete');
+    }
+
     // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {

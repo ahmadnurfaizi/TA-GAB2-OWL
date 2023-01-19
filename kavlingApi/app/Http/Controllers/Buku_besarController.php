@@ -138,6 +138,13 @@ class Buku_besarController extends Controller
         }
     }
 
+    // Function destroy digunakan untuk menghapus data
+    public function destroy($id)
+    {
+        $data = Buku_besar::findOrFail($id)->delete();
+        return ApiFormatter::createApi(200, 'Success Delete');
+    }
+
     // Function login digunakan untuk konfirmasi hak akses
     public function login(Request $request)
     {

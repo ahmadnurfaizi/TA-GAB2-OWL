@@ -24,7 +24,7 @@ class Buku_besarController extends Controller
         }
     }
 
-    // Function Index digunakan untuk mengirim data ke tabel database
+    // Function store digunakan untuk mengirim data ke tabel database
     public function store(Request $request)
     {
         try
@@ -63,6 +63,53 @@ class Buku_besarController extends Controller
 
             $data = Buku_besar::where("id_buku_besar","=", $insert->id_buku_besar)->first();
             if($data)
+            {
+                return ApiFormatter::createApi(200, 'Success', $data);
+            }
+            else
+            {
+                return ApiFormatter::createApi(400, 'Failed');
+            }
+        }
+        catch(Exception)
+        {
+            return ApiFormatter::createApi(400, 'Failed');
+        }
+    }
+
+    // Function update digunakan untuk mengirim data yang sudah di edit ke tabel database
+    public function update(Request $request, $id)
+    {
+        try
+        {
+            $data = $request->all();
+            $cek_saldo = Buku_besar::orderBy("created_at", "DESC")->first();
+            // ini ngecek apakah form debit tidak 0
+            if(($request->debit == !0))
+            {
+                /// DEBIT = UANG KELUAR
+                if(($cek_saldo['saldo'] == $cek_saldo['saldo']))
+                {
+                    $data['saldo'] = "-".$request->debit;
+                }
+                else{}
+            }
+            else
+            {
+                // KREDIT = UANG MASUK
+                if(empty($cek_saldo['saldo'] ))
+                {
+                    $data['saldo'] = $request->kredit;
+                }
+                else
+                {
+                    $data['saldo'] = $request->kredit + $cek_saldo['saldo'];
+                }
+            }
+            $update = Buku_besar::findOrFail($id)->update($data);
+
+            $data = Buku_besar::where("id_buku_besar",$id);
+            if($update)
             {
                 return ApiFormatter::createApi(200, 'Success', $data);
             }

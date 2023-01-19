@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+// Route::get('/', function () {
+//     return view('login');
+// });
+
+// login
+Route::get('/', [AuthController::class, 'login']);
+Route::post('login/auth', [AuthController::class, 'auth']);
+Route::get('auth/logout', [AuthController::class, 'logout']);

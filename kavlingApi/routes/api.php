@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\KonsumenController;
+use App\Http\Controllers\AngsuranController;
 
 
 /*
@@ -15,6 +17,14 @@ use App\Http\Controllers\UsersController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// angsuran
+Route::post('angsuran/store', [AngsuranController::class,'store']);
+Route::get('angsuran', [AngsuranController::class,'index']);
+Route::get('laporan', [AngsuranController::class,'laporan']);
+Route::post('angsuran/update/{id}', [AngsuranController::class,'update']);
+Route::get('angsuran/destroy/{id}', [AngsuranController::class,'destroy']);
+Route::get('angsuran/show/{id}', [AngsuranController::class,'show']);
 
 // konsumen
 Route::post('konsumen/store', [KonsumenController::class,'store']);
